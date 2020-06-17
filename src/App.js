@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import PokemonList from "./components/pokemon/PokemonList";
+import Pagination from "./components/pagination/Pagination";
+import PokemonDetail from "./components/pokemon/PokemonDetail";
 
-function App() {
+const App = (props) => {
+  const [page, setPage] = useState(1);
+  const [offset, setOffSet] = useState(0);
+  const [showDetail, setShowDetail] = useState(false);
+  const [showHome, setShowHome] = useState(true);
+  const [url, setUrl] = useState("");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button
+        onClick={() => {
+          setShowHome(true);
+          setShowDetail(false);
+        }}
+      >
+        HOME
+      </button>
+      {showHome && (
+        <div>
+          <PokemonList
+            setUrl={(value) => {
+              console.log("URL" + value);
+              setUrl(value);
+            }}
+            setShowHome={(value) => setShowHome(value)}
+            setShowDetail={(value) => setShowDetail(value)}
+            offset={offset}
+          />
+          <Pagination
+            page={page}
+            setOffSet={(value) => setOffSet(value)}
+            setPage={(value) => setPage(value)}
+          />
+        </div>
+      )}
+      {showDetail && (
+        <div>
+          <PokemonDetail url={url} />
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
